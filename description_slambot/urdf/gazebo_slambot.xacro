@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot name="slambot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+            <!-- fizyka kontaktu-->
+
+<xacro:property name="friction_high" value="1000.0" />
+<xacro:property name="friction_low"  value="0.0001" />
+<xacro:property name="kp"           value="10000.0" />
+<xacro:property name="kd"           value="10.0" />
+<xacro:property name="minDepth"     value="0.001" />
+<xacro:property name="maxVel"       value="0.1" />
+
+<xacro:macro name="wheel_gazebo_params" params="link friction use_fdir:=false">
+  <gazebo reference="${link}">
+    <mu1>${friction}</mu1>
+    <mu2>${friction}</mu2>
+    <kp>${kp}</kp>
+    <kd>${kd}</kd>
+    <minDepth>${minDepth}</minDepth>
+    <maxVel>${maxVel}</maxVel>
+    <xacro:if value="${use_fdir}">
+      <fdir1>1 0 0</fdir1>
+    </xacro:if>
+  </gazebo>
+</xacro:macro>
+
+<xacro:wheel_gazebo_params link="right_wheel_link"  friction="${friction_high}" use_fdir="true"/>
+<xacro:wheel_gazebo_params link="left_wheel_link"   friction="${friction_high}" use_fdir="true"/>
+<xacro:wheel_gazebo_params link="front_caster_wheel_link" friction="${friction_low}"/>
+<xacro:wheel_gazebo_params link="rear_caster_wheel_link"  friction="${friction_low}"/>
+
+
+
+<!--            włączenie komunikacji ros2_control i gazebo        -->
+<gazebo>
+  <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <robot_param>robot_description</robot_param>
+      <robot_param_node>robot_state_publisher</robot_param_node>
+      <parameters>$(find description_slambot)/config/controllers_slambot.yaml</parameters>
+  </plugin>
+
+  <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu">
+    <initial_orientation_as_reference>false</initial_orientation_as_reference>
+  </plugin>
+
+  <plugin filename="ignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
+    <render_engine>ogre2</render_engine>
+  </plugin>
+
+</gazebo>
+
+</robot> 
