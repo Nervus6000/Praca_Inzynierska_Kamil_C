@@ -104,9 +104,6 @@ class DiffDriveController(Node):
         if abs(d_s) > 1e-6 or abs(d_theta)> 1e-6: 
             d_s = d_s + d_s_noise
             d_theta = d_theta + d_theta_noise
-        else:
-            d_s = d_s 
-            d_theta = d_theta
 
         # całkowanie
         theta_mid = self.theta_ + d_theta / 2.0
