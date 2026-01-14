@@ -15,10 +15,10 @@ Symulację stworzono i uruchamiano z wykorzystaniem następujących systemów:
 ### 2. Pobranie odpowiednich pakietów 
 Przy próbie zbudowania terminal podpowie czego brakuje.
 ### 3. Zbudowanie projektu 
-```bash colcon build --packages-select description_slambot ```
+```colcon build --packages-select description_slambot ```
 
 
 ### 3. Uruchomienie symulacji 
-```bash ros2 launch description_slambot main_launch.py ```
+```ros2 launch description_slambot main_launch.py ```
 
 
